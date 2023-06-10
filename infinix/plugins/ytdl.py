@@ -134,7 +134,26 @@ async def download_video(event):
          ),
       )
       os.remove(f"{ytdl_data['id']}.mp3.mp3")      
-        
+      
+  elif video:
+      await vtx.edit(
+            f"Preparing to upload video:\
+        \n{ytdl_data['title']}\
+        \nby *{ytdl_data['uploader']}*"
+        )
+      await bot.send_file(
+            event.chat_id,
+            f"{ytdl_data['id']}.mp4",
+            supports_streaming=True,
+            caption=ytdl_data["title"],
+            progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
+                progress(
+                    d, t, vtx, c_time, "Uploading..", f"{ytdl_data['title']}.mp4"
+                )
+            ),
+        )
+      os.remove(f"{ytdl_data['id']}.mp4")
+      await vtx.delete()
         
         
         
